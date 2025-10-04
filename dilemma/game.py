@@ -1,6 +1,10 @@
 from dilemma.gamestate import GameState, Move
 from dilemma.strategy import StrategyFunc
 
+
+DRAW = '<draw>'
+
+
 class Game:
     """A game playable by a pair of StrategyFuncs."""
     def __init__(self, strategy_a: StrategyFunc, strategy_b: StrategyFunc, turn_limit = 200):
@@ -60,7 +64,7 @@ class Game:
                 self.points_a += 1
                 self.points_b += 1
             case Move.FORFEIT, Move.FORFEIT:
-                self.result = 'draw'
+                self.result = DRAW
                 return
             case Move.FORFEIT, _:
                 self.result = self.strategy_b.__name__
@@ -77,12 +81,12 @@ class Game:
         elif self.points_a < self.points_b:
             self.result = self.strategy_b.__name__
         else:
-            self.result = 'draw'
+            self.result = DRAW
 
     def play_game(self) -> str:
         """
         Play a full game up to the turn limit, asking each strategy for their move.
-        Returns the name of the winning strategy, or 'draw'.
+        Returns the name of the winning strategy, or '<draw>'.
         """
         while self.result is None:
             self.play_round()
