@@ -33,10 +33,10 @@ def run_tournament() -> dict[str, Record]:
         record_a.points += game.points_a
         record_b.points += game.points_b
 
-        if game.points_a > game.points_b:
+        if game.result == strat_a.__name__:
             record_a.wins += 1
             record_b.losses += 1
-        elif game.points_a < game.points_b:
+        elif game.result == strat_b.__name__:
             record_a.losses += 1
             record_b.wins += 1
         else:

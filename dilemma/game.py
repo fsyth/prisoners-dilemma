@@ -11,6 +11,14 @@ class Game:
         self.move_history: list[tuple[Move, Move]] = []
         self.points_a = 0
         self.points_b = 0
+        self.result: str | None = None
+
+    def __str__(self) -> str:
+        return f"""
+        {self.strategy_a.__name__} ({self.points_a}) vs {self.strategy_b.__name__} ({self.points_b})
+        Last 10 moves: {self.move_history[-10:]}
+        Result: {self.result}
+        """
 
     def perspective_from_a(self) -> GameState:
         """Get the GameState from the perspective of strategy_a."""
@@ -51,19 +59,32 @@ class Game:
             case Move.STEAL, Move.STEAL:
                 self.points_a += 1
                 self.points_b += 1
+            case Move.FORFEIT, Move.FORFEIT:
+                self.result = 'draw'
+                return
+            case Move.FORFEIT, _:
+                self.result = self.strategy_b.__name__
+                return
+            case _, Move.FORFEIT:
+                self.result = self.strategy_a.__name__
+                return
+
+        if len(self.move_history) < self.turn_limit:
+            return
+
+        if self.points_a > self.points_b:
+            self.result = self.strategy_a.__name__
+        elif self.points_a < self.points_b:
+            self.result = self.strategy_b.__name__
+        else:
+            self.result = 'draw'
 
     def play_game(self) -> str:
         """
         Play a full game up to the turn limit, asking each strategy for their move.
         Returns the name of the winning strategy, or 'draw'.
         """
-        while len(self.move_history) < self.turn_limit:
+        while self.result is None:
             self.play_round()
 
-        if self.points_a > self.points_b:
-            return self.strategy_a.__name__
-
-        if self.points_a < self.points_b:
-            return self.strategy_b.__name__
-
-        return 'draw'
+        return self.result
