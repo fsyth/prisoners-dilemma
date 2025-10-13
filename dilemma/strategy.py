@@ -38,6 +38,9 @@ def strategy(func: StrategyFunc) -> StrategyFunc:
     if sig.return_annotation is not Move:
         raise TypeError(f"Strategy '{func.__name__}' return type must be Move, got {sig.return_annotation!r}")
 
+    if not func.__doc__:
+        raise TypeError(f"Strategy '{func.__name__}' must include a docstring describing its behavior.")
+
     if func.__name__ in _registered_strategies:
         raise ValueError(f"Strategy '{func.__name__}' is already registered. Use a unique function name.")
 
