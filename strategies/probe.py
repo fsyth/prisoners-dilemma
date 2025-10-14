@@ -3,7 +3,9 @@ from dilemma import GameState, Move, strategy
 
 @strategy
 def probe(state: GameState) -> Move:
-    """Steals first. If they steal in response, play nice."""
+    """
+    Steals first. If they steal in response, play nice.
+    """
     if state.turns_played == 0:
         return Move.STEAL
 
