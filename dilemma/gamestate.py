@@ -18,6 +18,7 @@ class GameState:
         self.their_move_history: list[Move] = []
         self.my_points = 0
         self.their_points = 0
+        self.turns_played = 0
 
     def __str__(self) -> str:
         return f"""
