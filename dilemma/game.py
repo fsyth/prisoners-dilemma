@@ -31,6 +31,7 @@ class Game:
         state.their_move_history = [turn[1] for turn in self.move_history]
         state.my_points    = self.points_a
         state.their_points = self.points_b
+        state.turns_played = len(self.move_history)
         return state
 
     def perspective_from_b(self) -> GameState:
@@ -40,6 +41,7 @@ class Game:
         state.their_move_history = [turn[0] for turn in self.move_history]
         state.my_points    = self.points_b
         state.their_points = self.points_a
+        state.turns_played = len(self.move_history)
         return state
 
     def play_round(self):
